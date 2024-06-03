@@ -32,8 +32,10 @@ Route::middleware([
     Route::name('admin.')->middleware('role:admin')->prefix('admin')->group(function () {
         Route::get('/', function () {
             return view('admin.index');
-        })->name('dashboard'); // Ensure this matches 'admin.dashboard'
+        })->name('admin.index');
         Route::resource('/roles', RoleController::class);
+        Route::post('/roles/{role}/permissions', [RoleController::class, 'givePermissions'])->name('roles.permissions');
+        Route::delete('/roles/{role}/permissions/{permission}', [RoleController::class, 'revokePermissions'])->name('roles.permissions.revoke');
         Route::resource('/permissions', PermissionController::class);
     });
 });
